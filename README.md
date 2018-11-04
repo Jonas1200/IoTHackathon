@@ -29,3 +29,7 @@ Important Commands (run in packet manager console):
 1. Set Rights for Project:
 
     `chmod 755 ./RaspBier`
+	
+1. Start Raspberry Server
+
+	`./RaspBier`
