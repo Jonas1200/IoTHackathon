@@ -11,23 +11,23 @@ using RaspBier.Models;
 
 namespace RaspBier.Controllers
 {
-    public class ErrorController : Controller
+    public class NotificationEntryController : Controller
     {
         private readonly CustomDBContext _context;
 
-        public ErrorController(CustomDBContext context)
+        #region Default
+        public NotificationEntryController(CustomDBContext context)
         {
             _context = context;
         }
 
-        #region Default
-        // GET: Error
+        // GET: NotificationEntry
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Errors.ToListAsync());
+            return View(await _context.NotificationEntry.ToListAsync());
         }
 
-        // GET: Error/Details/5
+        // GET: NotificationEntry/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +35,39 @@ namespace RaspBier.Controllers
                 return NotFound();
             }
 
-            var error = await _context.Errors
+            var notificationEntry = await _context.NotificationEntry
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (error == null)
+            if (notificationEntry == null)
             {
                 return NotFound();
             }
 
-            return View(error);
+            return View(notificationEntry);
         }
 
-        // GET: Error/Create
+        // GET: NotificationEntry/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Error/Create
+        // POST: NotificationEntry/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,SensorID,ErrorType,Message,TimeStamp")] Error error)
+        public async Task<IActionResult> Create([Bind("ID,SensorID,NotificationType,Message,TimeStamp")] NotificationEntry notificationEntry)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(error);
+                _context.Add(notificationEntry);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(error);
+            return View(notificationEntry);
         }
 
-        // GET: Error/Edit/5
+        // GET: NotificationEntry/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +75,22 @@ namespace RaspBier.Controllers
                 return NotFound();
             }
 
-            var error = await _context.Errors.FindAsync(id);
-            if (error == null)
+            var notificationEntry = await _context.NotificationEntry.FindAsync(id);
+            if (notificationEntry == null)
             {
                 return NotFound();
             }
-            return View(error);
+            return View(notificationEntry);
         }
 
-        // POST: Error/Edit/5
+        // POST: NotificationEntry/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,SensorID,ErrorType,Message,TimeStamp")] Error error)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,SensorID,NotificationType,Message,TimeStamp")] NotificationEntry notificationEntry)
         {
-            if (id != error.ID)
+            if (id != notificationEntry.ID)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace RaspBier.Controllers
             {
                 try
                 {
-                    _context.Update(error);
+                    _context.Update(notificationEntry);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ErrorExists(error.ID))
+                    if (!NotificationEntryExists(notificationEntry.ID))
                     {
                         return NotFound();
                     }
@@ -115,10 +115,10 @@ namespace RaspBier.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(error);
+            return View(notificationEntry);
         }
 
-        // GET: Error/Delete/5
+        // GET: NotificationEntry/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,48 +126,52 @@ namespace RaspBier.Controllers
                 return NotFound();
             }
 
-            var error = await _context.Errors
+            var notificationEntry = await _context.NotificationEntry
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (error == null)
+            if (notificationEntry == null)
             {
                 return NotFound();
             }
 
-            return View(error);
+            return View(notificationEntry);
         }
 
-        // POST: Error/Delete/5
+        // POST: NotificationEntry/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var error = await _context.Errors.FindAsync(id);
-            _context.Errors.Remove(error);
+            var notificationEntry = await _context.NotificationEntry.FindAsync(id);
+            _context.NotificationEntry.Remove(notificationEntry);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ErrorExists(int id)
+        private bool NotificationEntryExists(int id)
         {
-            return _context.Errors.Any(e => e.ID == id);
+            return _context.NotificationEntry.Any(e => e.ID == id);
         }
         #endregion
 
         [HttpPost]
-        public async Task<bool> InsertError(int sensorId, int errorType, string message, string hash)
+        public async Task<bool> InsertNotification(int sensorId, int notificationType, string message, string hash)
         {
             if (!hash.Equals(SecurityHelper.SecurityHash))
                 return false;
 
-            var err = new Error();
-            err.SensorID = sensorId;
-            err.ErrorType = (ErrorType)errorType;
-            err.Message = message;
-            err.TimeStamp = DateTime.Now;
+            var not = new NotificationEntry();
+            not.SensorID = sensorId;
+            not.NotificationType = (NotificationType)notificationType;
+            not.Message = message;
+            not.TimeStamp = DateTime.Now;
 
-            _context.Errors.Add(err);
+            _context.NotificationEntry.Add(not);
             await _context.SaveChangesAsync();
 
+            var body = String.Format("Message: {0}", not.Message);
+            var subject = String.Format("Notification: {0} Sensor: {1}",not.NotificationType, not.SensorID);
+
+            MailHelper.SendMail(subject, body);
             return true;
         }
     }

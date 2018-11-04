@@ -1,0 +1,9 @@
+{
+  "DBPath": "/home/pi/DB.db",
+  "Url": "http://192.168.10.118:50000",
+  "MailServer": "smtp.gmail.com",
+  "MailPort": 25,
+  "MailHost": "raspbier@gmail.com",
+  "MailHostPassword": "123PpP++",
+  "MailReceiver": "mol@acadon.de"
+}

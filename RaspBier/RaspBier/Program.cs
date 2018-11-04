@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using RaspBier.Helper;
 
 namespace RaspBier
 {
@@ -15,11 +16,13 @@ namespace RaspBier
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+            
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>().UseUrls("http://192.168.10.118:50000");
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseStartup<Startup>().UseUrls(SettingsHelper.Settings.Url);
 
     }
 }

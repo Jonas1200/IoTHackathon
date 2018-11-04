@@ -35,6 +35,25 @@ namespace RaspBier.Migrations
                     b.ToTable("Errors");
                 });
 
+            modelBuilder.Entity("RaspBier.Models.NotificationEntry", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Message")
+                        .IsRequired();
+
+                    b.Property<int>("NotificationType");
+
+                    b.Property<int>("SensorID");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("NotificationEntry");
+                });
+
             modelBuilder.Entity("RaspBier.Models.Sensor", b =>
                 {
                     b.Property<int>("ID")

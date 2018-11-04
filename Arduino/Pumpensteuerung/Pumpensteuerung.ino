@@ -2,59 +2,29 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-//Wifi Communication
 const char* ssid = "Coredy E300";
 const char* password = "<Insert Password here>";
-const char* hashValue= "<Insert HASH here>";
 const char* host = "192.168.10.118";
+String url = "/SensorValue/InsertValue";
 const int httpPort = 50000;
 
-//Sensor Values
 int sensorID = 1;
-int sensorType = 0; //0 = Wassersensor
-int digitalHumidityPort = 2;
-int analogHumidityPort = A0;
+
+int inputHumidityPort = 2;
 int outputPump = 5;
 int outputLED = 0;
 
 
-void postErrorMessage(int sensor, int errorType, String message){
-  String url = "/Error/InsertError";
-  WiFiClient client = connectWifi();
-  String strValue("sensorId=");
-  strValue += String(sensor);
-  strValue += String("&errorType=");
-  strValue += String(errorType);
-  strValue += String("&message=");
-  strValue += String(message);
-  strValue += getHashString();
-  
-  
-  #ifdef debug
-    Serial.println(strValue);
-    Serial.println(strValue.length());
-  #endif
-  
-  client.print(String("POST ") + url + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" +
-               "Content-Type: application/x-www-form-urlencoded\r\n" +               
-               "Content-Length: " + strValue.length() + "\r\n" +
-               "\r\n" +
-               strValue
-               );
-}
 
 
-void postSensorValue(int Type, int sensor, int value){
-  String url = "/SensorValue/InsertValue";
+void postSensorValue(int sensorType, int sensor, int value){
   WiFiClient client = connectWifi();
   String strValue("sensorType=");
-  strValue += String(Type);
+  strValue += String(sensorType);
   strValue += String("&sensorId=");
   strValue += String(sensor);
   strValue += String("&value=");
   strValue += String(value);
-  strValue += getHashString();
   
   #ifdef debug
     Serial.println(strValue);
@@ -74,8 +44,7 @@ void postSensorValue(int Type, int sensor, int value){
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   Serial.begin(115200);
-  pinMode(digitalHumidityPort, INPUT);
-  pinMode(analogHumidityPort, INPUT);
+  pinMode(inputHumidityPort, INPUT);
   pinMode(outputPump, OUTPUT);
   pinMode(outputLED, OUTPUT);
   connectWifi();
@@ -83,31 +52,25 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
-  int Humidity = digitalRead(digitalHumidityPort);
+  int Humidity = digitalRead(inputHumidityPort);
   Serial.println(Humidity);
   if(Humidity == 1){
     bewaessern();
   }
+
   // print out the state of the button:
-  postSensorValue(0,sensorID,analogRead(analogHumidityPort));
+
   delay(1000);        // delay in between reads for stability
 }
 
 void bewaessern(){
-  digitalWrite(outputLED, LOW);
-  digitalWrite(outputPump, HIGH);
-  delay(11000);
   digitalWrite(outputLED, HIGH);
+  digitalWrite(outputPump, HIGH);
+  delay(10000);
+  digitalWrite(outputLED, LOW);
   digitalWrite(outputPump, LOW);
-  postSensorValue(sensorType,sensorID,1); //1 -> wenn gewässert wurde
-  delay(15000);
-  if(digitalRead(digitalHumidityPort)){
-    String errorMessage = String("Wasserstand niedrig. Bitte Wasser in Sensor " + String(sensorID) + " nachfüllen.");
-    postErrorMessage(sensorID, 2, errorMessage);
-    while(true){
-      delay(1000);
-    }
-  }
+  postSensorValue(0,sensorID,HIGH);
+  delay(5000); 
 }
 
 WiFiClient connectWifi(){
@@ -143,8 +106,4 @@ WiFiClient connectWifi(){
     #endif
     return client;
   }
-}
-
-String getHashString(){
-    return String(String("&hash=") + hashValue);
 }

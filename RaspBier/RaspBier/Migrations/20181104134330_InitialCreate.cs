@@ -24,6 +24,22 @@ namespace RaspBier.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NotificationEntry",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SensorID = table.Column<int>(nullable: false),
+                    NotificationType = table.Column<int>(nullable: false),
+                    Message = table.Column<string>(nullable: false),
+                    TimeStamp = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationEntry", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sensors",
                 columns: table => new
                 {
@@ -58,6 +74,9 @@ namespace RaspBier.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Errors");
+
+            migrationBuilder.DropTable(
+                name: "NotificationEntry");
 
             migrationBuilder.DropTable(
                 name: "Sensors");

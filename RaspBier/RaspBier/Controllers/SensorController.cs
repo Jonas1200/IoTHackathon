@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +19,13 @@ namespace RaspBier.Controllers
             _context = context;
         }
 
-        // GET: Sensors
+        // GET: Sensor
         public async Task<IActionResult> Index()
         {
             return View(await _context.Sensors.ToListAsync());
         }
 
-        // GET: Sensors/Details/5
+        // GET: Sensor/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,18 +43,18 @@ namespace RaspBier.Controllers
             return View(sensor);
         }
 
-        // GET: Sensors/Create
+        // GET: Sensor/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sensors/Create
+        // POST: Sensor/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] Sensor sensor)
+        public async Task<IActionResult> Create([Bind("ID,Name,ActionThreshold")] Sensor sensor)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +65,7 @@ namespace RaspBier.Controllers
             return View(sensor);
         }
 
-        // GET: Sensors/Edit/5
+        // GET: Sensor/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,12 +81,12 @@ namespace RaspBier.Controllers
             return View(sensor);
         }
 
-        // POST: Sensors/Edit/5
+        // POST: Sensor/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Sensor sensor)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,ActionThreshold")] Sensor sensor)
         {
             if (id != sensor.ID)
             {
@@ -117,7 +116,7 @@ namespace RaspBier.Controllers
             return View(sensor);
         }
 
-        // GET: Sensors/Delete/5
+        // GET: Sensor/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,7 +134,7 @@ namespace RaspBier.Controllers
             return View(sensor);
         }
 
-        // POST: Sensors/Delete/5
+        // POST: Sensor/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -149,12 +148,6 @@ namespace RaspBier.Controllers
         private bool SensorExists(int id)
         {
             return _context.Sensors.Any(e => e.ID == id);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

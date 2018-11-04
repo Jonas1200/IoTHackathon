@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RaspBier.Models.Error>
+﻿@model IEnumerable<RaspBier.Models.NotificationEntry>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.SensorID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ErrorType)
+                @Html.DisplayNameFor(model => model.NotificationType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Message)
@@ -35,7 +35,7 @@
                 @Html.DisplayFor(modelItem => item.SensorID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ErrorType)
+                @Html.DisplayFor(modelItem => item.NotificationType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
