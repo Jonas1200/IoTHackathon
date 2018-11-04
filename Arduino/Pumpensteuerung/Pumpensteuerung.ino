@@ -11,11 +11,11 @@ const int httpPort = 50000;
 
 //Sensor Values
 int sensorID = 1;
-int inputHumidityPort = 2;
+int sensorType = 0; //0 = Wassersensor
+int digitalHumidityPort = 2;
+int analogHumidityPort = A0;
 int outputPump = 5;
 int outputLED = 0;
-
-
 
 
 void postErrorMessage(int sensor, int errorType, String message){
@@ -45,11 +45,11 @@ void postErrorMessage(int sensor, int errorType, String message){
 }
 
 
-void postSensorValue(int sensorType, int sensor, int value){
+void postSensorValue(int Type, int sensor, int value){
   String url = "/SensorValue/InsertValue";
   WiFiClient client = connectWifi();
   String strValue("sensorType=");
-  strValue += String(sensorType);
+  strValue += String(Type);
   strValue += String("&sensorId=");
   strValue += String(sensor);
   strValue += String("&value=");
@@ -74,7 +74,8 @@ void postSensorValue(int sensorType, int sensor, int value){
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   Serial.begin(115200);
-  pinMode(inputHumidityPort, INPUT);
+  pinMode(digitalHumidityPort, INPUT);
+  pinMode(analogHumidityPort, INPUT);
   pinMode(outputPump, OUTPUT);
   pinMode(outputLED, OUTPUT);
   connectWifi();
@@ -82,13 +83,13 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
-  int Humidity = digitalRead(inputHumidityPort);
+  int Humidity = digitalRead(digitalHumidityPort);
   Serial.println(Humidity);
   if(Humidity == 1){
     bewaessern();
   }
   // print out the state of the button:
-
+  postSensorValue(0,sensorID,analogRead(analogHumidityPort));
   delay(1000);        // delay in between reads for stability
 }
 
@@ -98,9 +99,9 @@ void bewaessern(){
   delay(11000);
   digitalWrite(outputLED, HIGH);
   digitalWrite(outputPump, LOW);
-  postSensorValue(0,sensorID,HIGH);
+  postSensorValue(sensorType,sensorID,1); //1 -> wenn gewässert wurde
   delay(15000);
-  if(digitalRead(inputHumidityPort)){
+  if(digitalRead(digitalHumidityPort)){
     String errorMessage = String("Wasserstand niedrig. Bitte Wasser in Sensor " + String(sensorID) + " nachfüllen.");
     postErrorMessage(sensorID, 2, errorMessage);
     while(true){
@@ -145,5 +146,5 @@ WiFiClient connectWifi(){
 }
 
 String getHashString(){
-    return String("&hash=" + hashValue);
+    return String(String("&hash=") + hashValue);
 }
