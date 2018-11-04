@@ -22,23 +22,23 @@ A Raspberry Pi 3 is needed for the Project.
  
 1. Create Database
 
-&nbsp;  1. (Optional) Change Foldername for Database if wanted in /RaspBier/customSettings.json:
+  1. (Optional) Change Foldername for Database if wanted in /RaspBier/customSettings.json:
 
-&nbsp;&nbsp;	e.g: `"DBPath": "/home/pi/DB.db"`
+	e.g: `"DBPath": "/home/pi/DB.db"`
 
-&nbsp;  1. Open Visual Studio Projekt
+  1. Open Visual Studio Projekt
 
-&nbsp;  1. Open packet Manager console View->More Windows->Packet Manager Console
+>  1. Open packet Manager console View->More Windows->Packet Manager Console
 
-&nbsp;  1. Run following Commands in Packet Manager Console:
+  1. Run following Commands in Packet Manager Console:
 
-&nbsp;&nbsp;    1. InitalCreate (this creates an "action" in the Migrations-folder):
+>    1. InitalCreate (this creates an "action" in the Migrations-folder):
 
-&nbsp;&nbsp;&nbsp;     `Add-Migration InitialCreate`
+>     `Add-Migration InitialCreate`
 
-...  1. Update DB (run this to apply the created action on the database)
+  1. Update DB (run this to apply the created action on the database)
 	
-..    `Update-Database -Verbose`
+>    `Update-Database -Verbose`
 	
 1. Copy Released Project to Raspberry Pi
 
