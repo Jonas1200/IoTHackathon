@@ -14,19 +14,19 @@ A Raspberry Pi 3 is needed for the Project.
 
      `"MailReceiver": "test@test.com"`
 
-1. [Install ASP .Net Core on Raspberry Pi 3](https://github.com/dotnet/core/blob/master/samples/RaspberryPiInstructions.md#linux)
+2. [Install ASP .Net Core on Raspberry Pi 3](https://github.com/dotnet/core/blob/master/samples/RaspberryPiInstructions.md#linux)
  
-1. Create Database
+3. Create Database
 
   1. (Optional) Change Foldername for Database if wanted in /RaspBier/customSettings.json:
 
 	 e.g: `"DBPath": "/home/pi/DB.db"`
 
-  1. Open Visual Studio Projekt
+  2. Open Visual Studio Projekt
 
-  1. Open packet Manager console View->More Windows->Packet Manager Console
+  3. Open packet Manager console View->More Windows->Packet Manager Console
 
-  1. Run following Commands in Packet Manager Console:
+  4. Run following Commands in Packet Manager Console:
 
   * InitalCreate (this creates an "action" in the Migrations-folder):
 
@@ -36,7 +36,7 @@ A Raspberry Pi 3 is needed for the Project.
 	
     `Update-Database -Verbose`
 	
-1. Copy Released Project to Raspberry Pi
+4. Copy Released Project to Raspberry Pi
 
   1. Run following Commands in Packet Manager Console in Visual Studio:
 	
@@ -54,7 +54,7 @@ A Raspberry Pi 3 is needed for the Project.
 
      `chmod 755 ./RaspBier`
 	 
-1. Start Raspberry Pi Webpage:
+5. Start Raspberry Pi Webpage:
 
      `./RaspBier`
 	
