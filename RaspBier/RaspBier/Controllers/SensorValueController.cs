@@ -31,6 +31,7 @@ namespace RaspBier.Controllers
             else
                 values = await _context.SensorValues.ToListAsync();
 
+            values.Reverse();
             return View(values);
         }
 
