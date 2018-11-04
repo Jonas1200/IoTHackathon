@@ -16,6 +16,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActionThreshold)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -26,14 +29,12 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-controller="SensorValue" asp-action="Index" asp-route-id="@item.ID">Values</a> |
+                @Html.DisplayFor(modelItem => item.ActionThreshold)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                <form asp-controller="SensorValue" asp-action="DeleteAllValues">
-                    <input type="hidden" asp-for="@item.ID" />
-                    <input type="submit" value="Delete all values" class="btn btn-default" />
-                </form>
             </td>
         </tr>
 }
