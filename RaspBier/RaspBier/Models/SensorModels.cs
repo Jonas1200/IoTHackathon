@@ -18,6 +18,11 @@ namespace RaspBier.Models
         [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Aktions Schwellwert")]
+        public decimal ActionThreshold { get; set; }
+        
     }
 
     public class SensorValue
@@ -38,7 +43,7 @@ namespace RaspBier.Models
 
         [Required]
         [Display(Name = "Wert")]
-        public int Value { get; set; }
+        public decimal Value { get; set; }
 
         [Required]
         [Display(Name = "Zeitstempel")]
@@ -48,7 +53,9 @@ namespace RaspBier.Models
     public enum SensorType
     {
         [Display(Name = "Wassersensor")]
-        WaterSensor = 0
+        WaterSensor = 0,
+        [Display(Name = "Türsensor")]
+        Doorsensor = 1
     }
 
 

@@ -8,12 +8,29 @@ namespace RaspBier.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Errors",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SensorID = table.Column<int>(nullable: false),
+                    ErrorType = table.Column<int>(nullable: false),
+                    Message = table.Column<string>(nullable: false),
+                    TimeStamp = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Errors", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sensors",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    ActionThreshold = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,7 +45,7 @@ namespace RaspBier.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     SensorType = table.Column<int>(nullable: false),
                     SensorID = table.Column<int>(nullable: false),
-                    Value = table.Column<int>(nullable: false),
+                    Value = table.Column<decimal>(nullable: false),
                     TimeStamp = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -39,6 +56,9 @@ namespace RaspBier.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Errors");
+
             migrationBuilder.DropTable(
                 name: "Sensors");
 

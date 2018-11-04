@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RaspBier.Models.Sensor>
+﻿@model IEnumerable<RaspBier.Models.Error>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,7 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.ErrorType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
             </th>
             <th></th>
         </tr>
@@ -23,17 +26,15 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.ErrorType)
             </td>
             <td>
-                <a asp-controller="SensorValue" asp-action="Index" asp-route-id="@item.ID">Values</a> |
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                <form asp-controller="SensorValue" asp-action="DeleteAllValues">
-                    <input type="hidden" asp-for="@item.ID" />
-                    <input type="submit" value="Delete all values" class="btn btn-default" />
-                </form>
             </td>
         </tr>
 }

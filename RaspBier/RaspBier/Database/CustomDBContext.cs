@@ -13,9 +13,9 @@ namespace RaspBier.Database
         //Add-Migration InitialCreate --> InitalCreate (this creates an "action" in the Migrations-folder
         //Update-Database -Verbose --> Update DB (run this to apply the created action on the database)
 
-        private const string DATABASE_PATH = @"/home/pi/DB.db";
+        //private const string DATABASE_PATH = @"/home/pi/DB.db";
 
-        //private const string DATABASE_PATH = @"C:\TMP\DB.db";
+        private const string DATABASE_PATH = @"C:\TMP\DB.db";
 
 
         public CustomDBContext(DbContextOptions<CustomDBContext> options)
@@ -29,5 +29,6 @@ namespace RaspBier.Database
 
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<SensorValue> SensorValues { get; set; }
+        public DbSet<RaspBier.Models.Error> Errors { get; set; }
     }
 }

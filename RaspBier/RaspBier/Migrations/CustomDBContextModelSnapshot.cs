@@ -16,10 +16,31 @@ namespace RaspBier.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
+            modelBuilder.Entity("RaspBier.Models.Error", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ErrorType");
+
+                    b.Property<string>("Message")
+                        .IsRequired();
+
+                    b.Property<int>("SensorID");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Errors");
+                });
+
             modelBuilder.Entity("RaspBier.Models.Sensor", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("ActionThreshold");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -40,7 +61,7 @@ namespace RaspBier.Migrations
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<int>("Value");
+                    b.Property<decimal>("Value");
 
                     b.HasKey("ID");
 
