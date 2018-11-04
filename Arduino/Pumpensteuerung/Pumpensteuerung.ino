@@ -5,6 +5,7 @@
 //Wifi Communication
 const char* ssid = "Coredy E300";
 const char* password = "<Insert Password here>";
+const char* hashValue= "<Insert HASH here>";
 const char* host = "192.168.10.118";
 const int httpPort = 50000;
 
@@ -78,6 +79,7 @@ void setup() {
   pinMode(analogHumidityPort, INPUT);
   pinMode(outputPump, OUTPUT);
   pinMode(outputLED, OUTPUT);
+  digitalWrite(outputLED, LOW);
   connectWifi();
 }
 
@@ -91,21 +93,30 @@ void loop() {
   }
   // print out the state of the button:
   postSensorValue(0,sensorID,analogRead(analogHumidityPort));
-  delay(1000);        // delay in between reads for stability
+  delay(10000);        // delay in between reads for stability
 }
 
 void bewaessern(){
-  digitalWrite(outputLED, LOW);
-  digitalWrite(outputPump, HIGH);
-  delay(11000);
+  postSensorValue(sensorType,sensorID,0); //0 -> wenn die Bewässerung gestartet wird
   digitalWrite(outputLED, HIGH);
+  digitalWrite(outputPump, HIGH);
+  //Water Soil for x seconds
+  delay(11000);
+  digitalWrite(outputLED, LOW);
   digitalWrite(outputPump, LOW);
-  postSensorValue(sensorType,sensorID,1); //1 -> wenn gewässert wurde
-  delay(15000);
+  //Wait for 30 seconds for Water to flow into Soil
+  for (int i=1; i <= 30; i++){
+      postSensorValue(0,sensorID,analogRead(analogHumidityPort));
+      delay(1000);
+  }
   if(digitalRead(digitalHumidityPort)){
-    String errorMessage = String("Wasserstand niedrig. Bitte Wasser in Sensor " + String(sensorID) + " nachfüllen.");
+    //Wasser im Tank leer
+    String errorMessage = String("Wasserstand niedrig. Bitte Wasser in Bewässerungssystem '" + String(sensorID) + "' nachfüllen.");
     postErrorMessage(sensorID, 2, errorMessage);
     error = 1;
+  } else{
+    //Erfolgreiche Bewässerung
+    postSensorValue(sensorType,sensorID,1); //1 -> wenn erfolgreich bewässert wurde
   }
 }
 
