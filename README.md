@@ -32,26 +32,30 @@ A Raspberry Pi 3 is needed for the Project.
 
     `Update-Database -Verbose`
 
-[//]: # (Hello)
+[//]: # (End List)
 
-4. Copy Released Project to Raspberry Pi
+4. Copy Released Project to Raspberry Pi:
 
+[//]: # (End List)
+  
   1. Run following Commands in Packet Manager Console in Visual Studio:
 	
-  1. Publish Project with the following Command:
+  2. Publish Project with the following Command:
 
      `dotnet publish -r linux-arm -c Release`
 
-  1. Copy ~\RaspBier\RaspBier\bin\Release\netcoreapp2.1\linux-arm\publish to /home/pi/RaspBier
-	
-  1.  On Raspberry Pi change URL in /home/pi/RaspBier/customSettings.json to Raspberry IP Address(Get IP Address on Pi with Command `ifconfig`)!!!
+  3. Copy ~\RaspBier\RaspBier\bin\Release\netcoreapp2.1\linux-arm\publish to /home/pi/RaspBier
+
+  4.  On Raspberry Pi change URL in /home/pi/RaspBier/customSettings.json to Raspberry IP Address(Get IP Address on Pi with Command `ifconfig`)!!!
 
      e.g: `"Url": "http://192.168.10.118:50000",`
 
-  1. Don't forget to set Rights for Project:
+  5. Don't forget to set Rights for Project:
 
      `chmod 755 ./RaspBier`
-	 
+	
+[//]: # (End List)
+	
 5. Start Raspberry Pi Webpage:
 
      `./RaspBier`
