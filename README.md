@@ -6,7 +6,7 @@
 
 A Raspberry Pi 3 is needed for the Project.
 
-1. Change Email Receiver and Email Sender Account on Raspberry Pi in RaspBier/customSettings.json
+1. Change Email Receiver and Email Sender Account in Visual Studio Project in RaspBier/customSettings.json
 
      `"MailHost": "raspbier@mail.com",`
 
@@ -15,10 +15,6 @@ A Raspberry Pi 3 is needed for the Project.
      `"MailReceiver": "test@test.com"`
 
 1. [Install ASP .Net Core on Raspberry Pi 3](https://github.com/dotnet/core/blob/master/samples/RaspberryPiInstructions.md#linux)
-
-  1. Don't forget to set Rights for Project:
-
-     `chmod 755 ./RaspBier`
  
 1. Create Database
 
@@ -32,11 +28,11 @@ A Raspberry Pi 3 is needed for the Project.
 
   1. Run following Commands in Packet Manager Console:
 
-    1. InitalCreate (this creates an "action" in the Migrations-folder):
+  * InitalCreate (this creates an "action" in the Migrations-folder):
 
-     `Add-Migration InitialCreate`
+    `Add-Migration InitialCreate`
 
-  1. Update DB (run this to apply the created action on the database)
+  * Update DB (run this to apply the created action on the database)
 	
     `Update-Database -Verbose`
 	
@@ -54,7 +50,10 @@ A Raspberry Pi 3 is needed for the Project.
 
      e.g: `"Url": "http://192.168.10.118:50000",`
 
-	
+  1. Don't forget to set Rights for Project:
+
+     `chmod 755 ./RaspBier`
+	 
 1. Start Raspberry Pi Webpage:
 
      `./RaspBier`
